@@ -175,7 +175,7 @@ export default function Page() {
       toValue: { x: player.x * CELL_SIZE, y: player.y * CELL_SIZE },
       duration: 400,
       useNativeDriver: false,
-      easing: Easing.out(Easing.cubic)
+      easing: Easing.out(Easing.cubic),
     }).start();
 
     let rotationValue = 0;
@@ -188,34 +188,37 @@ export default function Page() {
       toValue: rotationValue,
       duration: 300,
       useNativeDriver: false,
-      easing: Easing.out(Easing.cubic)
+      easing: Easing.out(Easing.cubic),
     }).start();
-    
+
     // Karakterin pürüzsüz yürümesini sağlayan animasyon
     Animated.sequence([
       Animated.timing(playerScale, {
         toValue: 1.05,
         duration: 150,
         useNativeDriver: false,
-        easing: Easing.inOut(Easing.sin)
+        easing: Easing.inOut(Easing.sin),
       }),
       Animated.timing(playerScale, {
         toValue: 1,
         duration: 150,
         useNativeDriver: false,
-        easing: Easing.inOut(Easing.sin)
-      })
+        easing: Easing.inOut(Easing.sin),
+      }),
     ]).start();
-  }, [player]);
+  }, [player, direction]);
 
   useEffect(() => {
     enemies.forEach((enemy, index) => {
       if (enemyPositions[index]) {
         Animated.timing(enemyPositions[index], {
-          toValue: { x: enemy.position.x * CELL_SIZE, y: enemy.position.y * CELL_SIZE },
+          toValue: {
+            x: enemy.position.x * CELL_SIZE,
+            y: enemy.position.y * CELL_SIZE,
+          },
           duration: 300,
           useNativeDriver: false,
-          easing: Easing.linear
+          easing: Easing.linear,
         }).start();
       }
     });
@@ -227,13 +230,13 @@ export default function Page() {
         toValue: 1.2,
         duration: 200,
         useNativeDriver: false,
-        easing: Easing.elastic(2)
+        easing: Easing.elastic(2),
       }),
       Animated.timing(scoreAnim, {
         toValue: 1,
         duration: 200,
-        useNativeDriver: false
-      })
+        useNativeDriver: false,
+      }),
     ]).start();
   }, [score]);
 
@@ -247,18 +250,18 @@ export default function Page() {
               toValue: 1.05,
               duration: 200,
               useNativeDriver: false,
-              easing: Easing.inOut(Easing.sin)
+              easing: Easing.inOut(Easing.sin),
             }),
             Animated.timing(playerScale, {
               toValue: 0.95,
               duration: 200,
               useNativeDriver: false,
-              easing: Easing.inOut(Easing.sin)
-            })
+              easing: Easing.inOut(Easing.sin),
+            }),
           ])
         ).start();
       };
-      
+
       walkingAnimation();
     } else {
       playerScale.setValue(1);
@@ -282,25 +285,28 @@ export default function Page() {
 
             if (maze[Math.floor(newY)][Math.floor(newX)] === 2) {
               // Kapıya ulaşıldığında
-              setScore(prev => prev + (level * 100));
-              setLevel(prev => prev + 1);
+              setScore((prev) => prev + level * 100);
+              setLevel((prev) => prev + 1);
               const newMaze = createMaze();
               setMaze(newMaze);
               setPlayer({ x: 1, y: 1 });
-              setTimeLeft(prev => Math.min(prev + 30, GAME_TIME));
+              setTimeLeft((prev) => Math.min(prev + 30, GAME_TIME));
               const newEnemies = createEnemies(
                 { x: GRID_SIZE - 2, y: GRID_SIZE - 2 },
                 newMaze,
                 { x: 1, y: 1 }
               );
               setEnemies(newEnemies);
-              
+
               newEnemies.forEach((_, index) => {
                 if (index < enemyPositions.length) {
-                  enemyPositions[index].setValue({ x: newEnemies[index].position.x * CELL_SIZE, y: newEnemies[index].position.y * CELL_SIZE });
+                  enemyPositions[index].setValue({
+                    x: newEnemies[index].position.x * CELL_SIZE,
+                    y: newEnemies[index].position.y * CELL_SIZE,
+                  });
                 }
               });
-              
+
               setDirection({ x: 0, y: 1 });
               setIsMoving(false);
             }
@@ -309,15 +315,15 @@ export default function Page() {
               Animated.timing(playerScale, {
                 toValue: 0.8,
                 duration: 100,
-                useNativeDriver: false
+                useNativeDriver: false,
               }),
               Animated.timing(playerScale, {
                 toValue: 1,
                 duration: 100,
-                useNativeDriver: false
-              })
+                useNativeDriver: false,
+              }),
             ]).start();
-            
+
             setDirection({ x: -direction.x, y: -direction.y });
           }
         }
@@ -328,80 +334,87 @@ export default function Page() {
   }, [player, direction, isMoving, gameOver, won, maze, level]);
 
   useEffect(() => {
+    if (!gameOver && !won) {
+      const timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            setGameOver(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [gameOver, won]);
+
+  useEffect(() => {
     const gameLoop = setInterval(() => {
       if (!gameOver && !won) {
-        setEnemies(prevEnemies => 
+        setEnemies((prevEnemies) =>
           prevEnemies.map((enemy, index) => {
             const dx = Math.abs(enemy.position.x - player.x);
             const dy = Math.abs(enemy.position.y - player.y);
+
             if (dx < 0.8 && dy < 0.8) {
               setGameOver(true);
               setIsMoving(false);
               return enemy;
             }
 
-            // Daha akıllı düşman hareketi: En kısa yolu bulmaya çalış
             const currentX = Math.floor(enemy.position.x);
             const currentY = Math.floor(enemy.position.y);
             const playerGridX = Math.floor(player.x);
             const playerGridY = Math.floor(player.y);
-            
-            // Takip mesafesini artırdık ve her zaman takip etmesini sağladık
-            const followPlayer = Math.sqrt(
-              Math.pow(currentX - playerGridX, 2) + 
-              Math.pow(currentY - playerGridY, 2)
-            ) < 10;
-            
-            if (followPlayer) {
-              // A* benzeri hareket - oyuncuya en yakın yolu bul
+
+            // Düşmanın oyuncuya olan mesafesini hesapla
+            const distanceToPlayer = Math.sqrt(
+              Math.pow(currentX - playerGridX, 2) +
+                Math.pow(currentY - playerGridY, 2)
+            );
+
+            // Düşman her zaman oyuncuyu takip etsin
+            if (distanceToPlayer < 15) {
+              // Takip mesafesini artırdık
               const path = findPath(
-                { x: currentX, y: currentY }, 
+                { x: currentX, y: currentY },
                 { x: playerGridX, y: playerGridY }
               );
-              
+
               if (path.length > 0) {
-                // Bir sonraki adımı al
                 const nextStep = path[0];
                 return {
                   position: { x: nextStep.x, y: nextStep.y },
                   direction: {
                     x: Math.sign(nextStep.x - currentX),
-                    y: Math.sign(nextStep.y - currentY)
-                  }
+                    y: Math.sign(nextStep.y - currentY),
+                  },
                 };
               }
             }
-            
-            // Eğer takip etmezse veya yol bulunamazsa, oyuncuya doğru hareket et
+
+            // Eğer yol bulunamazsa veya mesafe uzaksa, rastgele hareket et
             const availableDirections = [
-              { x: 1, y: 0 },   // Sağ
-              { x: -1, y: 0 },  // Sol
-              { x: 0, y: 1 },   // Aşağı
-              { x: 0, y: -1 }   // Yukarı
-            ].filter(dir => 
+              { x: 1, y: 0 }, // Sağ
+              { x: -1, y: 0 }, // Sol
+              { x: 0, y: 1 }, // Aşağı
+              { x: 0, y: -1 }, // Yukarı
+            ].filter((dir) =>
               isValidMove(currentX + dir.x, currentY + dir.y, maze)
             );
 
             if (availableDirections.length > 0) {
-              // Oyuncuya doğru hareket et
-              const bestDirection = availableDirections.reduce((best, current) => {
-                const currentDist = Math.sqrt(
-                  Math.pow(currentX + current.x - playerGridX, 2) + 
-                  Math.pow(currentY + current.y - playerGridY, 2)
-                );
-                const bestDist = Math.sqrt(
-                  Math.pow(currentX + best.x - playerGridX, 2) + 
-                  Math.pow(currentY + best.y - playerGridY, 2)
-                );
-                return currentDist < bestDist ? current : best;
-              });
-
+              const randomDirection =
+                availableDirections[
+                  Math.floor(Math.random() * availableDirections.length)
+                ];
               return {
-                position: { 
-                  x: currentX + bestDirection.x,
-                  y: currentY + bestDirection.y
+                position: {
+                  x: currentX + randomDirection.x,
+                  y: currentY + randomDirection.y,
                 },
-                direction: bestDirection
+                direction: randomDirection,
               };
             }
 
@@ -409,10 +422,10 @@ export default function Page() {
           })
         );
       }
-    }, 150);
+    }, 200); // Güncelleme sıklığını artırdık (300ms'den 200ms'ye)
 
     return () => clearInterval(gameLoop);
-  }, [player, gameOver, won, maze, level]);
+  }, [player, gameOver, won, maze]);
 
   useEffect(() => {
     const blinkTimer = setInterval(() => {
