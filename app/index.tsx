@@ -173,7 +173,7 @@ export default function Page() {
   useEffect(() => {
     Animated.timing(playerPosition, {
       toValue: { x: player.x * CELL_SIZE, y: player.y * CELL_SIZE },
-      duration: 400,
+      duration: 500,
       useNativeDriver: false,
       easing: Easing.out(Easing.cubic),
     }).start();
@@ -186,7 +186,7 @@ export default function Page() {
 
     Animated.timing(playerRotation, {
       toValue: rotationValue,
-      duration: 300,
+      duration: 400,
       useNativeDriver: false,
       easing: Easing.out(Easing.cubic),
     }).start();
@@ -297,16 +297,6 @@ export default function Page() {
                 { x: 1, y: 1 }
               );
               setEnemies(newEnemies);
-
-              newEnemies.forEach((_, index) => {
-                if (index < enemyPositions.length) {
-                  enemyPositions[index].setValue({
-                    x: newEnemies[index].position.x * CELL_SIZE,
-                    y: newEnemies[index].position.y * CELL_SIZE,
-                  });
-                }
-              });
-
               setDirection({ x: 0, y: 1 });
               setIsMoving(false);
             }
@@ -327,7 +317,7 @@ export default function Page() {
             setDirection({ x: -direction.x, y: -direction.y });
           }
         }
-      }, 200);
+      }, 300);
 
       return () => clearInterval(moveInterval);
     }
@@ -375,7 +365,7 @@ export default function Page() {
             );
 
             // Düşman her zaman oyuncuyu takip etsin
-            if (distanceToPlayer < 15) {
+            if (distanceToPlayer < 20) {
               // Takip mesafesini artırdık
               const path = findPath(
                 { x: currentX, y: currentY },
@@ -405,16 +395,27 @@ export default function Page() {
             );
 
             if (availableDirections.length > 0) {
-              const randomDirection =
-                availableDirections[
-                  Math.floor(Math.random() * availableDirections.length)
-                ];
+              // Oyuncuya doğru hareket etmeye çalış
+              const bestDirection = availableDirections.reduce(
+                (best, current) => {
+                  const currentDist = Math.sqrt(
+                    Math.pow(currentX + current.x - playerGridX, 2) +
+                      Math.pow(currentY + current.y - playerGridY, 2)
+                  );
+                  const bestDist = Math.sqrt(
+                    Math.pow(currentX + best.x - playerGridX, 2) +
+                      Math.pow(currentY + best.y - playerGridY, 2)
+                  );
+                  return currentDist < bestDist ? current : best;
+                }
+              );
+
               return {
                 position: {
-                  x: currentX + randomDirection.x,
-                  y: currentY + randomDirection.y,
+                  x: currentX + bestDirection.x,
+                  y: currentY + bestDirection.y,
                 },
-                direction: randomDirection,
+                direction: bestDirection,
               };
             }
 
@@ -422,14 +423,14 @@ export default function Page() {
           })
         );
       }
-    }, 200); // Güncelleme sıklığını artırdık (300ms'den 200ms'ye)
+    }, 200); // Güncelleme sıklığını artırdık (400ms'den 200ms'ye)
 
     return () => clearInterval(gameLoop);
   }, [player, gameOver, won, maze]);
 
   useEffect(() => {
     const blinkTimer = setInterval(() => {
-      setEnemyBlinking(prev => !prev);
+      setEnemyBlinking((prev) => !prev);
     }, 500);
 
     return () => clearInterval(blinkTimer);
@@ -443,14 +444,14 @@ export default function Page() {
           toValue: 45,
           duration: 300,
           useNativeDriver: false,
-          easing: Easing.inOut(Easing.ease)
+          easing: Easing.inOut(Easing.ease),
         }),
         Animated.timing(mouthAngleAnim, {
           toValue: 0,
           duration: 300,
           useNativeDriver: false,
-          easing: Easing.inOut(Easing.ease)
-        })
+          easing: Easing.inOut(Easing.ease),
+        }),
       ]).start(() => {
         if (!gameOver && !won) {
           startMouthAnimation();
@@ -465,20 +466,20 @@ export default function Page() {
           Animated.timing(playerGlowAnim, {
             toValue: 1,
             duration: 1000,
-            useNativeDriver: false
+            useNativeDriver: false,
           }),
           Animated.timing(playerGlowAnim, {
             toValue: 0,
             duration: 1000,
-            useNativeDriver: false
-          })
+            useNativeDriver: false,
+          }),
         ])
       ).start();
     };
 
     startMouthAnimation();
     startGlowAnimation();
-    
+
     return () => {
       mouthAngleAnim.stopAnimation();
       playerGlowAnim.stopAnimation();
@@ -492,94 +493,99 @@ export default function Page() {
     if (isValidMove(newX, newY, maze)) {
       setDirection({ x: dx, y: dy });
       setIsMoving(true);
-      
+
       // Yön değiştirirken hafif bir hareket efekti
       Animated.sequence([
         Animated.timing(playerScale, {
           toValue: 1.1,
           duration: 100,
           useNativeDriver: false,
-          easing: Easing.out(Easing.cubic)
+          easing: Easing.out(Easing.cubic),
         }),
         Animated.timing(playerScale, {
           toValue: 1,
           duration: 100,
           useNativeDriver: false,
-          easing: Easing.in(Easing.cubic)
-        })
+          easing: Easing.in(Easing.cubic),
+        }),
       ]).start();
     }
   };
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: (evt: GestureResponderEvent, gestureState: PanResponderGestureState) => {
+    onPanResponderMove: (
+      evt: GestureResponderEvent,
+      gestureState: PanResponderGestureState
+    ) => {
       const { dx, dy } = gestureState;
       const isHorizontalSwipe = Math.abs(dx) > Math.abs(dy);
-      
+
       // Hareket hassasiyetini artırdık
       if (isHorizontalSwipe) {
-        if (dx > 5) { // Eşik değerini düşürdük
+        if (dx > 3) {
+          // Eşik değerini düşürdük
           changeDirection(1, 0);
-        } else if (dx < -5) { // Eşik değerini düşürdük
+        } else if (dx < -3) {
+          // Eşik değerini düşürdük
           changeDirection(-1, 0);
         }
       } else {
-        if (dy > 5) { // Eşik değerini düşürdük
+        if (dy > 3) {
+          // Eşik değerini düşürdük
           changeDirection(0, 1);
-        } else if (dy < -5) { // Eşik değerini düşürdük
+        } else if (dy < -3) {
+          // Eşik değerini düşürdük
           changeDirection(0, -1);
         }
       }
     },
-    onPanResponderRelease: (evt: GestureResponderEvent, gestureState: PanResponderGestureState) => {
+    onPanResponderRelease: (
+      evt: GestureResponderEvent,
+      gestureState: PanResponderGestureState
+    ) => {
       const now = Date.now();
-      if (now - lastSwipeTime < 50) return; // Süreyi düşürdük
+      if (now - lastSwipeTime < 100) return; // Süreyi düşürdük
       setLastSwipeTime(now);
-    }
+    },
   });
 
   const restartGame = () => {
     const newMaze = createMaze();
     setMaze(newMaze);
-
-    const getRandomPosition = () => {
-      let x, y;
-      do {
-        x = Math.floor(Math.random() * (GRID_SIZE - 2)) + 1;
-        y = Math.floor(Math.random() * (GRID_SIZE - 2)) + 1;
-      } while (newMaze[y][x] !== 0);
-      return { x, y };
-    };
-
-    const playerStartPos = getRandomPosition();
-    setPlayer(playerStartPos);
+    setPlayer({ x: 1, y: 1 });
     setTimeLeft(GAME_TIME);
-    
-    playerPosition.setValue({ x: playerStartPos.x * CELL_SIZE, y: playerStartPos.y * CELL_SIZE });
-    playerRotation.setValue(0);
-    playerScale.setValue(1);
-    
-    const exitPosition = newMaze.findIndex(row => row.includes(2));
-    const newEnemies = createEnemies(
-      { x: exitPosition % GRID_SIZE, y: Math.floor(exitPosition / GRID_SIZE) },
-      newMaze,
-      playerStartPos
-    );
-    setEnemies(newEnemies);
-    
-    newEnemies.forEach((enemy, index) => {
-      if (index < enemyPositions.length) {
-        enemyPositions[index].setValue({ x: enemy.position.x * CELL_SIZE, y: enemy.position.y * CELL_SIZE });
-      }
-    });
-    
-    setGameOver(false);
-    setWon(false);
     setScore(0);
     setLevel(1);
+    setGameOver(false);
+    setWon(false);
     setDirection({ x: 0, y: 1 });
     setIsMoving(false);
+
+    // Animasyon değerlerini sıfırla
+    playerPosition.setValue({ x: CELL_SIZE, y: CELL_SIZE });
+    playerRotation.setValue(0);
+    playerScale.setValue(1);
+    scoreAnim.setValue(1);
+    timerAnim.setValue(1);
+
+    // Düşmanları yeniden oluştur
+    const newEnemies = createEnemies(
+      { x: GRID_SIZE - 2, y: GRID_SIZE - 2 },
+      newMaze,
+      { x: 1, y: 1 }
+    );
+    setEnemies(newEnemies);
+
+    // Düşman pozisyonlarını sıfırla
+    newEnemies.forEach((enemy, index) => {
+      if (enemyPositions[index]) {
+        enemyPositions[index].setValue({
+          x: enemy.position.x * CELL_SIZE,
+          y: enemy.position.y * CELL_SIZE,
+        });
+      }
+    });
   };
 
   const interpolatedRotation = playerRotation.interpolate({
