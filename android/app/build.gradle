@@ -86,9 +86,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.anonymous.GameMobile'
+    namespace 'com.mehmetdilmen.sobeleman'
     defaultConfig {
-        applicationId 'com.anonymous.GameMobile'
+        applicationId 'com.mehmetdilmen.sobeleman'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -1,4 +1,4 @@
-package com.anonymous.GameMobile
+package com.mehmetdilmen.sobeleman
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

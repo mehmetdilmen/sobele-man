@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity, Text, SafeAreaView, PanResponder, GestureResponderEvent, PanResponderGestureState, Animated, Easing } from 'react-native';
-import { Accelerometer } from 'expo-sensors';
-import { AdMobBanner, AdMobInterstitial, AdMobRewarded } from "expo-ads-admob";
+import { Accelerometer } from "expo-sensors";
 
 const { width, height } = Dimensions.get("window");
 const GRID_SIZE = 15;
@@ -520,19 +519,6 @@ export default function Page() {
     };
   }, [gameOver, won]);
 
-  useEffect(() => {
-    // Reklam birimlerini ayarla
-    const bannerAdUnitID = "ca-app-pub-4300902416268566/9521637920"; // Banner reklam birimi
-    const rewardedAdUnitID = "ca-app-pub-4300902416268566/9516525223"; // Ödüllü reklam birimi
-
-    // Oyun bittiğinde ödüllü reklamı göster
-    if (gameOver) {
-      AdMobRewarded.requestAdAsync()
-        .then(() => AdMobRewarded.showAdAsync())
-        .catch((error) => console.log(error));
-    }
-  }, [gameOver]);
-
   const changeDirection = (dx: number, dy: number) => {
     const newX = player.x + dx;
     const newY = player.y + dy;
@@ -598,79 +584,39 @@ export default function Page() {
   });
 
   const restartGame = () => {
-    // Ödüllü reklamı göster ve oyunu yeniden başlat
-    AdMobRewarded.requestAdAsync()
-      .then(() => AdMobRewarded.showAdAsync())
-      .then(() => {
-        const newMaze = createMaze();
-        setMaze(newMaze);
-        setPlayer({ x: 1, y: 1 });
-        setTimeLeft(GAME_TIME);
-        setScore(0);
-        setLevel(1);
-        setGameOver(false);
-        setWon(false);
-        setDirection({ x: 0, y: 1 });
-        setIsMoving(false);
+    // Oyunu yeniden başlat
+    const newMaze = createMaze();
+    setMaze(newMaze);
+    setPlayer({ x: 1, y: 1 });
+    setTimeLeft(GAME_TIME);
+    setScore(0);
+    setLevel(1);
+    setGameOver(false);
+    setWon(false);
+    setDirection({ x: 0, y: 1 });
+    setIsMoving(false);
 
-        playerPosition.setValue({ x: CELL_SIZE, y: CELL_SIZE });
-        playerRotation.setValue(0);
-        playerScale.setValue(1);
-        scoreAnim.setValue(1);
-        timerAnim.setValue(1);
+    playerPosition.setValue({ x: CELL_SIZE, y: CELL_SIZE });
+    playerRotation.setValue(0);
+    playerScale.setValue(1);
+    scoreAnim.setValue(1);
+    timerAnim.setValue(1);
 
-        const newEnemies = createEnemies(
-          { x: GRID_SIZE - 2, y: GRID_SIZE - 2 },
-          newMaze,
-          { x: 1, y: 1 }
-        );
-        setEnemies(newEnemies);
+    const newEnemies = createEnemies(
+      { x: GRID_SIZE - 2, y: GRID_SIZE - 2 },
+      newMaze,
+      { x: 1, y: 1 }
+    );
+    setEnemies(newEnemies);
 
-        newEnemies.forEach((enemy, index) => {
-          if (enemyPositions[index]) {
-            enemyPositions[index].setValue({
-              x: enemy.position.x * CELL_SIZE,
-              y: enemy.position.y * CELL_SIZE,
-            });
-          }
+    newEnemies.forEach((enemy, index) => {
+      if (enemyPositions[index]) {
+        enemyPositions[index].setValue({
+          x: enemy.position.x * CELL_SIZE,
+          y: enemy.position.y * CELL_SIZE,
         });
-      })
-      .catch((error) => {
-        console.log(error);
-        // Reklam yüklenemezse normal şekilde oyunu yeniden başlat
-        const newMaze = createMaze();
-        setMaze(newMaze);
-        setPlayer({ x: 1, y: 1 });
-        setTimeLeft(GAME_TIME);
-        setScore(0);
-        setLevel(1);
-        setGameOver(false);
-        setWon(false);
-        setDirection({ x: 0, y: 1 });
-        setIsMoving(false);
-
-        playerPosition.setValue({ x: CELL_SIZE, y: CELL_SIZE });
-        playerRotation.setValue(0);
-        playerScale.setValue(1);
-        scoreAnim.setValue(1);
-        timerAnim.setValue(1);
-
-        const newEnemies = createEnemies(
-          { x: GRID_SIZE - 2, y: GRID_SIZE - 2 },
-          newMaze,
-          { x: 1, y: 1 }
-        );
-        setEnemies(newEnemies);
-
-        newEnemies.forEach((enemy, index) => {
-          if (enemyPositions[index]) {
-            enemyPositions[index].setValue({
-              x: enemy.position.x * CELL_SIZE,
-              y: enemy.position.y * CELL_SIZE,
-            });
-          }
-        });
-      });
+      }
+    });
   };
 
   const interpolatedRotation = playerRotation.interpolate({
@@ -690,12 +636,6 @@ export default function Page() {
 
   return (
     <SafeAreaView style={styles.container} {...panResponder.panHandlers}>
-      <AdMobBanner
-        bannerSize="smartBannerPortrait"
-        adUnitID="ca-app-pub-4300902416268566/9521637920"
-        style={styles.banner}
-        servePersonalizedAds
-      />
       <Animated.View
         style={[styles.header, { transform: [{ scale: scoreAnim }] }]}
       >
@@ -1035,12 +975,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
-  },
-  banner: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: 50,
   },
 });
 

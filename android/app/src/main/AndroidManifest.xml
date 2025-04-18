@@ -24,8 +24,7 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="gamemobile"/>
-        <data android:scheme="com.anonymous.GameMobile"/>
+        <data android:scheme="com.mehmetdilmen.sobeleman"/>
       </intent-filter>
     </activity>
   </application>

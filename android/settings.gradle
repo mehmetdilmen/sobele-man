@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'GameMobile'
+rootProject.name = 'Sobele Man'
 
 dependencyResolutionManagement {
   versionCatalogs {

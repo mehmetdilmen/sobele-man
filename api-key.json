@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "sobele-man-service",
+  "private_key_id": "d2ef8f0c85f058bfd198b45a306e3f5c71d4f55a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDfhRU0IWnDO7+/\nqW/UvRYqQyI/qcLyASjZZfiB16lAnsMzHt/hoV05QTHFHfZ7M1lR5WCj8FbVnxGj\nxYJdplhTRTcmCxP41zOt+oGgIMrxFDzECb79Lfdjtaqwu6yY+FNI04XZ16KXSlDB\ngejuWdUuT0FDqovgFFuh01tk5ZGWvoVI2uv/YqaQgIFY/8D0z4JuKfLSje1lEHLg\nnsUzM/jnXxCEC8lsOqhovk4Uqx7JGWgpE3ewKVOclAre5590+LT2GgOciIvbR6Xv\n4JCybLVfzhVk0ZYJA/GLSj/80/aV91nKDj3VHLfFIWbdfIaHyAsL0nqzX5TBDfOh\nw4REiPq9AgMBAAECggEAXpNe/2nL6HHVlnFJAkjnogY57ZoVBHT9Jc+BsN7hnJgQ\nnAbKUBwI5/rv5inhawu1FXPqyjMdatIdkqA1ow6JfOJijVROpRHZqhm+01RMymj3\ntTMyfsn+TVBG4vTl+OvJwZzOm/gjscQeG2KufnvAOhIK2WjGOpAinXxixXRlf9Re\nphqQfOs/8kjqDTETWGTCWnirygShoD7pOUhBF11zRzqVwbO/i5blQ7d5Yp6pTmtT\n+zAo/XZDHrqyQBLkmpMY8pZfAIMW6T0zFF4aj/VmW2QuM6Q3+EFgtDSBmVxVsDBl\nOxTpXjdaa+taD7UFG7Ev/MH4M3/runndeXBBh6h3+QKBgQD9mqwfO+HJ4VW2xPuj\nj1zPmF3NphvO472/+JeTqCT8U1jbyhFaY55EgPlsLN9zAgjOgXfqcseEyERlFHAS\n2zowLJHTb4YfU873kj0seHkBjOx+Vnnb3ffOsKWd7kkgyg9ZXthKLVQttON3zF41\nEbr8iY488S/8iqY3FoOVxE39RwKBgQDhoac3C7xrC0sZi/SZrkSkoAo8hh7QYH1R\nbzTCNdMoepBhLz8D244llaKtaYDIXjQMA7QbW9qqk2mnbVNC/Y/iN31td6OeLNmr\nFU4GZJqFAsVvxEyUJZtLlscR2yiGP/NAXRWsSFZosAw/gPGEgcEZiD/NFEGV3Sxz\nKCz6mG+52wKBgQDgJgZ98MqHSdAdpAuaLAtnPQ+jxW6MtUQwWgN3McXG88/1K6uc\nzbHEcI6EK0EwgJrSEyKvKNXqKawx/xdzwyqyC6K0U70jEUs8DJhfJvglA66/l6VL\nTOxLVlx7s3IVNiLM5gSbw2bEoz3t08dsdohjzxzWBoNYXh+9Tvvssr4P3wKBgG8r\nGJo0fBc5rzzdCh0WEdgSyjhb1J7Si6wt4I63ulw9VxmrD5808+psuYQ7cSpHz9kD\nkh/QuAJHM008vkNJbzUEJhZjVgg/DNgQXSslMkTKwsB4tUpg5QzvMxIHKwZKR+20\nb1M9KOXXp5E6VMT2sU+FI/pFOrM+EAKFDvRBWvr1AoGAYFmk+PTifUe+3tvIUw9f\n/Le3HoKPnwfepm98krfxAGV8OD0JRFPyJRum6CIAMd/Tu5SXe2pbf950CFMXr4GK\n5q+GXbDahUndxZZuhYAVUTBqWSYYPDYTmwEg3zb2z3eveWqNZWt11OC1JMqqfWMJ\nWqBjthe3AGEUY2jHenajibc=\n-----END PRIVATE KEY-----\n",
+  "client_email": "sobele-man-service@sobele-man-service.iam.gserviceaccount.com",
+  "client_id": "102585460591227927658",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sobele-man-service%40sobele-man-service.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="500" viewBox="0 0 1024 500" xmlns="http://www.w3.org/2000/svg">
+    <!-- Arka plan -->
+    <rect x="0" y="0" width="1024" height="500" fill="#2C3E50"/>
+    
+    <!-- Labirent deseni (arka planda) -->
+    <g opacity="0.1">
+        <path d="M0 100 H1024" stroke="white" stroke-width="2"/>
+        <path d="M0 200 H1024" stroke="white" stroke-width="2"/>
+        <path d="M0 300 H1024" stroke="white" stroke-width="2"/>
+        <path d="M0 400 H1024" stroke="white" stroke-width="2"/>
+        <path d="M100 0 V500" stroke="white" stroke-width="2"/>
+        <path d="M300 0 V500" stroke="white" stroke-width="2"/>
+        <path d="M500 0 V500" stroke="white" stroke-width="2"/>
+        <path d="M700 0 V500" stroke="white" stroke-width="2"/>
+        <path d="M900 0 V500" stroke="white" stroke-width="2"/>
+    </g>
+    
+    <!-- Oyun başlığı -->
+    <text x="512" y="200" 
+          font-family="Arial Black, sans-serif" 
+          font-size="80" 
+          fill="#E74C3C" 
+          text-anchor="middle"
+          font-weight="bold">SOBELE MAN</text>
+    
+    <!-- Alt başlık -->
+    <text x="512" y="280" 
+          font-family="Arial, sans-serif" 
+          font-size="32" 
+          fill="#ECF0F1" 
+          text-anchor="middle">Labirentte Macera</text>
+    
+    <!-- Ana karakter (büyük S) -->
+    <path d="M412 150 
+             C476 150, 508 182, 508 214
+             C508 246, 476 278, 412 278
+             C348 278, 316 310, 316 342
+             C316 374, 348 406, 412 406"
+          stroke="#E74C3C" 
+          stroke-width="32"
+          stroke-linecap="round"
+          fill="none"/>
+    
+    <!-- Düşmanlar -->
+    <circle cx="612" cy="250" r="20" fill="#E67E22"/>
+    <circle cx="712" cy="350" r="20" fill="#E67E22"/>
+    <circle cx="312" cy="350" r="20" fill="#E67E22"/>
+    
+    <!-- Parıltı efektleri -->
+    <circle cx="512" cy="250" r="200" fill="white" opacity="0.05"/>
+    <circle cx="512" cy="250" r="150" fill="white" opacity="0.05"/>
+</svg> 

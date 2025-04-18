@@ -1,4 +1,4 @@
-package com.anonymous.GameMobile
+package com.mehmetdilmen.sobeleman
 
 import android.app.Application
 import android.content.res.Configuration

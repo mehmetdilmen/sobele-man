@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <!-- Ana karakter (S harfi stilize edilmiş) - Daha büyük versiyonu -->
+    <path d="M256 96 
+             C352 96, 400 144, 400 192
+             C400 240, 352 288, 256 288
+             C160 288, 112 336, 112 384
+             C112 432, 160 480, 256 480"
+          stroke="#E74C3C" 
+          stroke-width="48"
+          stroke-linecap="round"
+          fill="none"/>
+    
+    <!-- Düşmanlar (büyük daireler) -->
+    <circle cx="128" cy="128" r="24" fill="#E67E22"/>
+    <circle cx="384" cy="384" r="24" fill="#E67E22"/>
+    <circle cx="128" cy="384" r="24" fill="#E67E22"/>
+    <circle cx="384" cy="128" r="24" fill="#E67E22"/>
+    
+    <!-- Parıltı efekti -->
+    <circle cx="256" cy="256" r="200" fill="white" opacity="0.1"/>
+    <circle cx="256" cy="256" r="140" fill="white" opacity="0.05"/>
+</svg> 

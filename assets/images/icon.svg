@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <!-- Arka plan -->
+    <rect x="0" y="0" width="512" height="512" fill="#2C3E50"/>
+    
+    <!-- Labirent deseni -->
+    <path d="M64 64 H448 V448 H64 V64" fill="none" stroke="#34495E" stroke-width="16"/>
+    <path d="M128 128 H384 V384 H128 V128" fill="none" stroke="#34495E" stroke-width="12"/>
+    <path d="M192 192 H320 V320 H192 V192" fill="none" stroke="#34495E" stroke-width="8"/>
+    
+    <!-- Ana karakter (S harfi stilize edilmiş) -->
+    <path d="M256 160 
+             C320 160, 352 192, 352 224
+             C352 256, 320 288, 256 288
+             C192 288, 160 320, 160 352
+             C160 384, 192 416, 256 416"
+          stroke="#E74C3C" 
+          stroke-width="32"
+          stroke-linecap="round"
+          fill="none"/>
+    
+    <!-- Düşmanlar (küçük daireler) -->
+    <circle cx="160" cy="160" r="16" fill="#E67E22"/>
+    <circle cx="352" cy="352" r="16" fill="#E67E22"/>
+    <circle cx="160" cy="352" r="16" fill="#E67E22"/>
+    <circle cx="352" cy="160" r="16" fill="#E67E22"/>
+    
+    <!-- Parıltı efekti -->
+    <circle cx="256" cy="256" r="180" fill="white" opacity="0.1"/>
+    <circle cx="256" cy="256" r="120" fill="white" opacity="0.05"/>
+</svg> 

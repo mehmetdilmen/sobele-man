@@ -11,17 +11,32 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.GameMobile"
+      "bundleIdentifier": "com.mehmetdilmen.sobeleman",
+      "infoPlist": {
+        "NSUserTrackingUsageDescription": "This identifier will be used to deliver personalized ads to you.",
+        "SKAdNetworkItems": [
+          {
+            "SKAdNetworkIdentifier": "cstr6suwn9.skadnetwork"
+          }
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mehmetdilmen.sobeleman"
+      "package": "com.mehmetdilmen.sobeleman",
+      "versionCode": 1,
+      "permissions": [],
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-4300902416268566~3882298439"
+      }
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -45,6 +60,14 @@
     ],
     "headers": {
       "headerShown": false
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "90b91f9c-f305-46a8-9001-6658ea450ae1"
+      }
     }
   }
 }
